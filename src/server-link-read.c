@@ -1,7 +1,7 @@
 #include "server.h"
 
 #if SERVER_IMPLEMENTED_DEFAULT && _WIN32
-	static Error server_link_read_windows(const ServerLink* link, byte* buffer, size* length, int flags) {
+	static Error server_link_read_windows(const ServerLink* link, byte* buffer, umax* length, int flags) {
 		int readin = recv(link->internal, (char*) buffer, *length, flags);
 
 		if (readin == SOCKET_ERROR) {
@@ -19,7 +19,7 @@
 	#include <errno.h>
 	#include <sys/socket.h>
 
-	static Error server_link_read_posix(const ServerLink* link, byte* buffer, size* length, int flags) {
+	static Error server_link_read_posix(const ServerLink* link, byte* buffer, umax* length, int flags) {
 		ssize_t readin = recv(link->internal, buffer, *length, flags);
 
 		if (readin == -1) {
@@ -31,7 +31,7 @@
 	}
 #endif
 
-Error server_link_read(const ServerLink* link, byte* buffer, size* length) {
+Error server_link_read(const ServerLink* link, byte* buffer, umax* length) {
 	#if SERVER_IMPLEMENTED_DEFAULT
 		#if _WIN32
 			return server_link_read_windows(link, buffer, length, 0);
@@ -43,9 +43,9 @@ Error server_link_read(const ServerLink* link, byte* buffer, size* length) {
 	#endif
 }
 
-Error server_link_read_all(const ServerLink* link, byte* buffer, size length) {
+Error server_link_read_all(const ServerLink* link, byte* buffer, umax length) {
 	#if SERVER_IMPLEMENTED_DEFAULT
-		size written = length;
+		umax written = length;
 		Error error;
 
 		#if _WIN32

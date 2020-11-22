@@ -1,5 +1,5 @@
 NAME = server
-VERSION = 0.1
+VERSION = 0.2
 
 AR = ar rcs
 CC = cc -std=c89

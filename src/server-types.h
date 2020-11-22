@@ -6,12 +6,14 @@
 		typedef unsigned char byte;
 	#endif
 
-	#ifndef TYPE_SIZE
-		#define TYPE_SIZE
+	#ifndef TYPE_UMAX
+		#define TYPE_UMAX
 		#if __STDC_VERSION__ >= 199901L
-			typedef unsigned long long int size;
+			#define TYPE_UMAX_LONG 1
+			typedef unsigned long long int umax;
 		#else
-			typedef unsigned long int size;
+			#define TYPE_UMAX_LONG 0
+			typedef unsigned long int umax;
 		#endif
 	#endif
 

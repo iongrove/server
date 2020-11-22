@@ -1,5 +1,5 @@
 NAME = error
-VERSION = 0.3
+VERSION = 0.4
 
 AR = ar rcs
 CC = cc -std=c89

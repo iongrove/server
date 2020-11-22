@@ -1,7 +1,7 @@
 #include "server.h"
 
 #if SERVER_IMPLEMENTED_DEFAULT && _WIN32
-	static Error server_link_write_windows(const ServerLink* link, const byte* buffer, size* length) {
+	static Error server_link_write_windows(const ServerLink* link, const byte* buffer, umax* length) {
 		int written = send(link->internal, (char*) buffer, *length, 0);
 
 		if (written == SOCKET_ERROR) {
@@ -19,7 +19,7 @@
 	#include <errno.h>
 	#include <sys/socket.h>
 
-	static Error server_link_write_posix(const ServerLink* link, const byte* buffer, size* length) {
+	static Error server_link_write_posix(const ServerLink* link, const byte* buffer, umax* length) {
 		ssize_t written = send(link->internal, buffer, *length, MSG_NOSIGNAL);
 
 		if (written == -1) {
@@ -31,7 +31,7 @@
 	}
 #endif
 
-Error server_link_write(const ServerLink* link, const byte* buffer, size* length) {
+Error server_link_write(const ServerLink* link, const byte* buffer, umax* length) {
 	#if SERVER_IMPLEMENTED_DEFAULT
 		#if _WIN32
 			return server_link_write_windows(link, buffer, length);
@@ -43,8 +43,8 @@ Error server_link_write(const ServerLink* link, const byte* buffer, size* length
 	#endif
 }
 
-Error server_link_write_all(const ServerLink* link, const byte* buffer, size length) {
-	size written = length;
+Error server_link_write_all(const ServerLink* link, const byte* buffer, umax length) {
+	umax written = length;
 	Error error;
 
 	ERROR(server_link_write(link, buffer, &written));
